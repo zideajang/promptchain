@@ -3,6 +3,7 @@
 promptchain 定位是一个轻量级的 LLM-based 的框架 。面向人群为个人开发人员，想要快速开发 LLM based 应用，promptchain 作为 tinychain 的前身， 作为一个试探性的项目。转眼间过了大半年，周围的生态在这短短时间里发生很大变换，自己也在 Agent 框架上积攒了一些经验，所以才有底气重构并且也准备将细节分享给大家。
 
 ![Prompt Chain](./assets/logo.png)
+<img src="assets/logo.png" alt="固定尺寸图片" width="200" height="150">
 
 
 ## 动态
