@@ -1,6 +1,9 @@
-# prompt chain
+# PromptChain
 
 promptchain 定位是一个轻量级的 LLM-based 的框架 。面向人群为个人开发人员，想要快速开发 LLM based 应用，promptchain 作为 tinychain 的前身， 作为一个试探性的项目。转眼间过了大半年，周围的生态在这短短时间里发生很大变换，自己也在 Agent 框架上积攒了一些经验，所以才有底气重构并且也准备将细节分享给大家。
+
+[Prompt Chain](assets/logo.png)
+
 
 ## 动态
 - 对 deepseek 的支持，整个项目现在转向优先支持 Deepseek 模型系列，近期推出新功能都是先支持 deepseek 的模型系列，然后才会推出支持 ollama 平台上的模型
