@@ -1,99 +1,94 @@
+
+
 # PromptChain
 
-promptchain 定位是一个轻量级的 LLM-based 的框架 。面向人群为个人开发人员，想要快速开发 LLM based 应用，promptchain 作为 tinychain 的前身， 作为一个试探性的项目。转眼间过了大半年，周围的生态在这短短时间里发生很大变换，自己也在 Agent 框架上积攒了一些经验，所以才有底气重构并且也准备将细节分享给大家。
+PromptChain 是一个**轻量级、LLM-based 的框架**，专为希望快速开发 LLM 驱动应用的**个人开发者**设计。作为 Tinychain 的前身，PromptChain 最初是一个探索性项目。经过大半年的发展，LLM 生态发生了翻天覆地的变化，同时我们在 Agent 框架上也积累了宝贵经验，这让我们有信心进行重构，并乐意与大家分享其背后的设计细节。
 
-<div align="center">
-  <img src="assets/logo.png" alt="固定尺寸图片" width="320" height="180">
-</div>
-## 动态
-- 对 deepseek 的支持，整个项目现在转向优先支持 Deepseek 模型系列，近期推出新功能都是先支持 deepseek 的模型系列，然后才会推出支持 ollama 平台上的模型
-- 对 MCP 支持
+-----
 
-作为这些代码开发人员角度逐行解释代码，作为视频稿件
+<div align="center"\>
+<img src="assets/logo.png" alt="PromptChain Logo" width="320" height="320"\>
+</div\>
 
+-----
 
+## 🚀 最新动态
 
+  * **DeepSeek 优先支持：** PromptChain 现在优先支持 DeepSeek 模型系列。近期推出的所有新功能都将首先在 DeepSeek 模型上实现，随后才会扩展支持 Ollama 平台上的其他模型。
 
-首先从整体上，给出这些代码的一个共同点就是为了实现链式调用函数内部都实现 invoke 函数
+## 🎯 路线图 (TODO)
 
+  * **MCP 支持：** 即将更新支持 Multi-Chain Processing (MCP) 模式。
+  * **链式模式：** 将支持更多高级的链式模式，助力快速开发高效的 LLM 应用，例如 **Snowball (雪球模式)**、**Fallback (回退模式)** 以及 **Human-in-the-Loop (人工介入模式)** 等。
 
+-----
 
-不用过于拘泥细节对于每个函数整体概括，对于其中关键点以及其实现逻辑给出解释即可，注意解释连贯性，避免逐行解释。
+## ✨ 核心特性
 
+  * **轻量与低成本：** 易于集成到现有项目中，引入成本低。
+  * **多语言支持：** 计划支持 JavaScript, TypeScript, Java, Go, Rust, C, C++, 和 Scala 等多语言版本。
+  * **函数式思想：** 框架核心遵循“一切皆函数”的设计理念，结构清晰。
+  * **事件驱动：** 基于事件传递信息，实现模块间的松耦合通信。
 
+-----
 
-以函数为单位，给出简单易懂口语化的解释说明
+## 🛠️ 安装
 
+轻松几步即可开始使用 PromptChain：
 
-## 目标
-是一个轻量级的 prompt chain，面向个人的 agent 框架，prompt chain 是 tinychain 的前身，主要目的用于探索 agent 实现路线 
-这个prompt chain 框架目标是典型函数式编程的范例
+```bash
+git clone https://github.com/zideajang/promptchain.git
+cd promptchain
+pip install -e .
+```
 
-## 特点
-- 轻量级，低成本引入到现有的框架
-- 支持多语言版本，例如 JavaScript、Typescript、java、go、rust、c、cpp 和 scala
-- 在框架中遵从了一切都是函数的基本思想
-- 是一个基于事件传递信息的框架
+-----
 
+## 💡 Hello World 示例
 
-## 相关设计模式
-- 状态机
-- 观察者模式
-- 责任链设计模式
+通过以下简单示例，快速了解如何使用 PromptChain 构建你的第一个 LLM 链：
 
 ```python
-task [task agent[prompt | model | response] | agent[prompt | model | respone] outputcheck(target fn)-> task
-```
+import asyncio
 
-- 最小执行单元就是 agent 
+from rich.console import Console
+from rich.panel import Panel
+
+from promptchain.message import SystemMessage, Message, Messages
+from promptchain.prompt import AIMessagePromptTemplate, HumanMessagePromptTemplate
+from promptchain.chain_processor import ChainProcessor
+from promptchain.processors import PrintMarkdownProcessor
+from promptchain.llm import DeepseekChatMessageModel # 注意：现在优先支持Deepseek
+
+console = Console()
 
 
-
-## 使用
-```pyhton
-response = build_model("llama3")("write read csv file in python")
-```
-```python
-response = build_chat_model("llama3")("you are linux operating system")("ls command")
-```
-
-## 支持链式调用
-```
-chain | assistant_message | humam_message | model |print_markdown_tool
-```
-- 以`|` 连接多个操作(或者处理单元)
-- 首先初始化 chain 
-- assistant_messags Y
-
-```python
-async def main():
-    system_message = SystemMessage(content="you are linux system")
+async def simple_chain_example():
+    # 1. 初始化消息，设置系统角色
+    system_message = SystemMessage(content="你是一个 linux 系统")
     
-    assistant_message = AIMessagePromptTemplate.from_template("you are very help assistant")
-    humam_message = HumanMessagePromptTemplate.from_template("ls")
+    # 2. 定义提示模板，用于后续的用户和AI交互
+    assistant_prompt = AIMessagePromptTemplate.from_template("作为非常有帮助的助手")
+    human_prompt = HumanMessagePromptTemplate.from_template("ls")
 
-    model = ChatMessageModel("llama3")
+    # 3. 指定使用的LLM模型 (目前优先支持 DeepSeek)
+    model = DeepseekChatMessageModel(name="test") 
     
+    # 4. 初始化链式处理器，将系统消息作为初始上下文
     chain = ChainProcessor(Messages(messages=[system_message]))
 
-    print_markdown_tool = PrintMarkdownTool(name="print markdown",description="print markdown")
+    # 5. 定义一个Markdown打印处理器，用于输出结果
+    print_markdown_tool = PrintMarkdownProcessor(description="print markdown")
     
-    chain | assistant_message | humam_message | model |print_markdown_tool
+    # 6. 构建链式操作：通过 `|` 符将各个组件连接起来，形成数据流
+    # 每个组件都实现了 Runnable 接口的 invoke 方法
+    # 未来将提供Python装饰器，让普通函数也能轻松接入链中
+    chain | assistant_prompt | human_prompt | model | print_markdown_tool
+
+    # 7. 启动链并执行所有定义的动作
     await chain.invoke()
-    print(chain.messages)
+    
+if __name__ == "__main__":
+    asyncio.run(main=simple_chain_example())
+
 ```
-
-
-为了增强 prompt 连续性，基于实际经验提出几种常用策略，
-- inverse prompt
-- snowball prompt
-
-## 模块
-
-
-
-
-
-# Function calling
-## 目标
-让大模型学会如何去使用工具，也就是增加大语言模型的自由度
