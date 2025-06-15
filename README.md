@@ -6,10 +6,12 @@ PromptChain 是一个**轻量级、LLM-based 的框架**，专为希望快速开
 
 -----
 
-<div align="center"\>
-<img src="assets/logo.png" alt="PromptChain Logo" width="320" height="320"\>
-</div\>
+<div align="center">
+<img src="assets/logo.png" alt="PromptChain Logo" width="320" height="300"\>
+</div>
 
+<div align="left">
+</div>
 -----
 
 ## 🚀 最新动态
